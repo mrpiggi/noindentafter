@@ -1,0 +1,407 @@
+% \iffalse meta-comment
+% noindentafter.dtx
+%<*identify>
+%
+%  noindentafter -- purposefully prevention of paragraph indentation
+%
+%% ----------------------------------------------------------------------------
+%%
+%% Copyright (C) Michiel Helvensteijn, 2014-2021
+%% Copyright (C) Falk Hanisch <hanisch.latex@outlook.com>, 2021-2021
+%%
+%% ----------------------------------------------------------------------------
+%%
+%% This work may be distributed and/or modified under the conditions
+%% of the LaTeX Project Public License, version 1.3c of the license.
+%% The latest version of this license is in
+%%     http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of
+%% LaTeX version 2008-05-04 or later.
+%%
+%% This work has the LPPL maintenance status "author-maintained".
+%%
+%% The current maintainer and author of this work is Falk Hanisch.
+%%
+%% This work consists of the main source file README.md, LICENSE.md,
+%% noindentafter.dtx and the derived documentation noindentafter.pdf
+%%
+%% ----------------------------------------------------------------------------
+%%
+%</identify>
+% \fi
+%
+% \iffalse
+%<*dtx>
+\ifx\documentclass\undefined
+\input docstrip.tex
+\keepsilent
+
+\preamble
+
+noindentafter -- purposefully prevention of paragraph indentation
+
+\endpreamble
+\askforoverwritefalse
+\usedir{tex/latex/noindentafter}
+\generate{%
+  \usepreamble\defaultpreamble
+  \file{noindentafter.sty}{
+    \from{noindentafter.dtx}{package,identify}
+    \from{noindentafter.dtx}{package,body}
+  }
+}
+\else
+\let\endbatchfile\relax
+\fi
+\endbatchfile
+%</dtx>
+% \fi
+%
+% \iffalse
+%<*dtx|package&identify>
+\NeedsTeXFormat{LaTeX2e}[2020-10-01]
+%<*dtx>
+\ifx\ProvidesFile\undefined\def\ProvidesFile#1[#2]{}\fi
+\ProvidesFile{noindentafter.dtx}
+%</dtx>
+%<package&identify>\ProvidesPackage{noindentafter}
+  [2021-05-14 v1.00 purposefully prevention of paragraph indentation]
+%</dtx|package&identify>
+% \fi
+%
+% \iffalse
+%<*dtx>
+\documentclass[english,xindy,final]{tudscrdoc}
+\KOMAoptions{parskip=false}
+\usepackage{iftex}
+\iftutex
+  \usepackage{fontspec}
+\else
+  \usepackage[T1]{fontenc}
+\fi
+\usepackage{babel}
+% normalized vskip for listings
+\newlength\niavskip
+\AtBeginDocument{%
+  \ifdim\parskip>\bigskipamount%
+    \setlength\niavskip{\parskip}%
+  \else%
+    \setlength\niavskip{\bigskipamount}%
+  \fi%
+}
+\newcommand*\nianormalizedvskip{\vskip\glueexpr\niavskip-\parskip\relax}
+% listings style
+\usepackage{xcolor}
+\usepackage{quoting}
+\usepackage{listings}
+\lstset{%
+  inputencoding=utf8,extendedchars=true,%
+  literate=%
+    {ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+    {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+    {ß}{{\ss}}1 {~}{{\textasciitilde}}1
+    {»}{{\guillemetright}}1 {«}{{\guillemetleft}}1
+}
+\lstdefinestyle{noindentafter}{%
+  language=[LaTeX]tex,%
+  columns=flexible,%
+  frame=single,%
+  xleftmargin=\fboxsep,%
+  xrightmargin=\fboxsep,%
+  escapechar=§,%
+  aboveskip=\niavskip,%
+  belowskip=0pt,%
+  backgroundcolor=\color{yellow!10},%
+  basicstyle=\color{darkgray}\small\ttfamily,%
+  moretexcs=[2]{NoIndentAfterThis,NoIndentAfterCmd,NoIndentAfterEnv},%
+  texcsstyle=*\color{black},%
+  texcsstyle=*[2]\color{red}\bfseries,%
+}
+\lstnewenvironment{niaexample}[1][]{%
+  \lstset{style=noindentafter,#1}%
+}{%
+  \nianormalizedvskip%
+}
+\makeatletter
+% suppress overwriting warning
+\providecommand*\filec@ntents@silent{%
+  \let\@latex@warning@no@line\@gobble%
+}
+% environment for listing and inclusion, unused guard <manual> necessary
+\newenvironment{niashow}{%
+  \csuse{filecontents*}[force,nosearch,silent]{\jobname-lst.aux}%
+}{%
+  \csuse{endfilecontents*}%
+}%
+\AfterEndEnvironment{niashow}{%
+  \begin{quoting}[rightmargin=0pt,vskip=0pt]
+  \lstinputlisting[style=noindentafter]{\jobname-lst.aux}%
+  \nianormalizedvskip%
+  \input{\jobname-lst.aux}%
+  \nianormalizedvskip%
+  \end{quoting}%
+}
+\newcommand*\niaagain[1][\relax]{%
+  #1%
+  \begin{quoting}[rightmargin=0pt,vskip=0pt]
+  \nianormalizedvskip%
+  \input{\jobname-lst.aux}%
+  \nianormalizedvskip%
+  \end{quoting}%
+}
+% TODO l3doc + l3build
+\NewDocumentCommand\DescribeMacroExtended{m !o}{%
+  \ifhmode%
+    \vskip\niavskip%
+  \else%
+    \addpenalty{\@beginparpenalty}%
+    \addvspace{\niavskip}%
+  \fi%
+  \noindent%
+  \DescribeMacro{#1}%
+  \IfValueT{#2}{%
+    \expandafter\cs\expandafter{\expandafter\@gobble\string#1}#2%
+    \vskip\smallskipamount%
+  }%
+  \noindent\ignorespaces%
+}
+\makeatother
+
+\usepackage{bookmark}
+\usepackage[babel]{microtype}
+
+\usepackage{noindentafter}
+\NoIndentAfterEnv{niaexample}
+\NoIndentAfterEnv{niashow}
+\NoIndentAfterCmd{\niaagain}
+
+
+%\EnableCrossrefs
+\CodelineIndex
+\RecordChanges
+\GetFileInfo{noindentafter.dtx}
+
+
+
+\begin{document}
+  \title{The package \pkg{noindentafter}}
+  \author{%
+    Michiel Helvensteijn (2014-2021)\\%
+    Falk Hanisch (2021--)\\%
+    \url{https://github.com/mrpiggi/noindentafter}\\%
+    \mailto{hanisch.latex@outlook.com}%
+  }
+  \date{\fileversion\nobreakspace(\filedate)}
+  \maketitle%
+  \begin{abstract}
+    \noindent
+    For certain environments---such as \env{itemize} or \env{theorem}---as 
+    well as specific commands, indentation of the following paragraph is not 
+    desired. It is of course possible to manually add \cs{noindent} to each 
+    occurrence, but it is very easy to forget this at one point or another.
+    This package provides a few simple commands which can be used to patch 
+    existing macros and environments in order to get rid of manually using 
+    \cs{noindent} after these. Therefore, both packages \pkg{etoolbox} and 
+    \pkg{xpatch} are required.
+  \end{abstract}
+  %\tableofcontents
+  \setcounter{secnumdepth}{0}
+  \DocInput{\filename}
+\end{document}
+% \fi
+%
+\changes{v0.0.1}{2013-08-02}{initial version by Michiel Helvensteijn}
+\changes{v0.2.0}{2014-11-30}{new implementation, fixing a spacing issue}
+\changes{v0.2.2}{2014-11-30}{fixed version number in the README}
+\changes{v1.00}{2021-05-11}{new maintainer: Falk Hanisch}^^A
+\changes{v1.00}{2021-05-14}{fix for \LaTeXe\ 2019-10-01 and later}
+
+
+
+\section{Usage}
+
+The package does not provide additional options and is used in the simplest way 
+possible:
+
+\begin{niaexample}
+\usepackage{noindentafter}
+\end{niaexample}
+
+In order to ensure a consistent layout throughout the document, it is 
+recommended---but not mandatory---to use the commands described below within 
+the preamble after loading package \pkg{noindentafter}. 
+
+
+
+\DescribeMacroExtended{\NoIndentAfterEnv}[\marg{environment}]
+This is probably the most frequently needed functionality. After using this 
+command, any paragraph following such an \marg{environment} will remain 
+unindented. The example below shows the default output without the involvement 
+of \pkg{noindentafter}. 
+
+\begin{niashow}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, 
+vestibulum ut, placerat ac, adipiscing vitae, felis. 
+
+\begin{itemize}
+  \item First Item
+  \item Second Item
+\end{itemize}
+  
+Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer 
+id, vulputate a, magna. Donec vehicula augue eu neque. 
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac 
+turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. 
+\end{niashow}
+
+Once \lstinline[style=noindentafter]|\NoIndentAfterEnv{itemize}| has been 
+executed, the output differs by the \emph{unintended} paragraph directly after 
+the \env{itemize} environment: \niaagain[\NoIndentAfterEnv{itemize}]
+
+Note that using the \cs{NoIndentAfterEnv} command on an environment is not the 
+same as adding \cs{NoIndentAfterThis} to the end of it:^^A
+\footnote{\cs{NoIndentAfterEnv} bypasses the group that surrounds environments}
+
+\begin{niashow}
+\newenvironment{mytestenv}{\itshape}{\NoIndentAfterThis}
+\begin{mytestenv}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, 
+vestibulum ut, placerat ac, adipiscing vitae, felis. 
+\end{mytestenv}
+
+Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer 
+id, vulputate a, magna. Donec vehicula augue eu neque. 
+\end{niashow}
+
+
+
+
+\DescribeMacroExtended{\NoIndentAfterCmd}[\marg{command}]
+By using \cs{NoIndentAfterCmd}, macros can be modified. There probably may not 
+be many situations where this is useful, but perhaps this one:
+
+\begin{niashow}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit:
+
+\[ 1 + 1 = 2 \]
+
+Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur 
+dictum gravida mauris:
+
+\NoIndentAfterCmd{\]}
+
+\[ 2 + 2 = 4 \]
+
+Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec 
+vehicula augue eu neque. 
+\end{niashow}
+
+
+
+\DescribeMacroExtended{\NoIndentAfterThis}
+Finally, this is the most primitive macro offered by the package. It forces a
+paragraph break and suppresses indentation for whatever follows:
+
+\begin{niashow}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, 
+vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida 
+mauris. \NoIndentAfterThis Nam arcu libero, nonummy eget, consectetuer id, 
+vulputate a, magna. Donec vehicula augue eu neque. 
+\end{niashow}
+
+
+
+\section{Acknowledgements}
+This package resulted from \url{http://tex.stackexchange.com/q/112404} and the 
+excellent responses to it by \textsc{cgnieder} and \textsc{lockstep}. Although 
+it initially based on the proposed solution by \textsc{cgnieder}---as it was 
+simpler and more generally applicable---the answer by \textsc{lockstep} is 
+definitely worth reading.
+
+
+
+\StopEventually{^^A
+  \cleardoublepage\PrintIndex^^A
+  \PrintChanges^^A
+  \PrintToDos^^A
+}
+%
+% \iffalse
+%</dtx>
+%<*package&body>
+% \fi
+%
+%^^A \cleardoublepage
+%^^A \appendix
+% \section{Implementation}
+% The only required packages are \pkg{etoolbox} as well as \pkg{xpatch}.
+%    \begin{macrocode}
+\RequirePackage{etoolbox}
+\RequirePackage{xpatch}
+%    \end{macrocode}
+%
+% \begin{macro}{\nia@scan}
+% This command implements the main principle behind this package. It checks 
+% whether it is followed by a paragraph. If so, the command \cs{par} is 
+% temporarily changed using \cs{everypar}, so that the following paragraph is
+% not indented. Immediately afterwards, default paragraph behavior is restored 
+% with \cs{@restorepar} (from the \LaTeXe\ kernel).
+%    \begin{macrocode}
+\newcommand*\nia@scan{%
+  \kernel@ifnextchar\par{%
+    \par%
+    \def\par{%
+      \everypar{\setbox\z@\lastbox\everypar{}}%
+      \@restorepar%
+    }%
+  }{}%
+}
+%    \end{macrocode}
+% \end{macro}^^A \nia@scan
+%
+% \begin{macro}{\nia@afterendenv}
+% This command is used for hooking into the ending routine of an environment at
+% the latest possible point after \cs{ignorespaces}. It is heavily inspired by 
+% David Carlisle\footnote{\url{https://tex.stackexchange.com/a/179034/38481}} 
+% and uses a delimited argument in order to apply \cs{nia@scan} last. 
+%
+% It is invoked via hook \cs{AfterEndEnvironment} provided by \pkg{etoolbox} 
+% and leaves everything between its invocation and \cs{ignorespaces}|\fi| at 
+% the very end of \cs{end} unchanged---even additonal material given through 
+% the same hook---and finally executes \cs{nia@scan}.
+%    \begin{macrocode}
+\newcommand*\nia@afterendenv{}
+\def\nia@afterendenv#1\ignorespaces\fi{#1\ignorespaces\fi\nia@scan}
+%    \end{macrocode}
+% \end{macro}^^A \nia@afterendenv
+%
+% \begin{macro}{\NoIndentAfterThis}
+% \begin{macro}{\NoIndentAfterCmd}
+% \begin{macro}{\NoIndentAfterEnv}
+% These are finally the user-level commands to activate the funtionality of 
+% \pkg{noindetafter} for the given \marg{environment}/\marg{macro} as well as
+% immediate execution. 
+%    \begin{macrocode}
+\newrobustcmd*\NoIndentAfterThis{\nia@scan\par}
+\newcommand*\NoIndentAfterCmd[1]{%
+  \xapptocmd#1{\NoIndentAfterThis}{}{%
+    \PackageWarning{noindentafter}{%
+      Patching `\string#1' failed!\MessageBreak%
+      `\string\NoIndentAfterCmd{\string#1}' won't work%
+    }%
+  }%
+}
+\newcommand*\NoIndentAfterEnv[1]{\AfterEndEnvironment{#1}{\nia@afterendenv}}
+%    \end{macrocode}
+% \end{macro}^^A \NoIndentAfterEnv
+% \end{macro}^^A \NoIndentAfterCmd
+% \end{macro}^^A \NoIndentAfterThis
+%
+% \iffalse
+%</package&body>
+% \fi
+%
+% \Finale
+%
+\endinput

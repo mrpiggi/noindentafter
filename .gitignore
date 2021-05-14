@@ -1,0 +1,14 @@
+## binaries folder
+release*/
+## auxiliary files
+*.aux
+*.bak
+*.glo
+*.gls
+*.idx
+*.ind
+*.log
+*.pdf
+*.sty
+*.synctex*
+*.xdy
