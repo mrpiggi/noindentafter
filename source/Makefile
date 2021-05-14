@@ -1,14 +1,12 @@
 # package name
-# TODO distinguish between bundle and module(s)
 PACKAGE = noindentafter
-
 # formatting tools
 TEX = tex
 LATEX = pdflatex-dev --synctex=1
-define run_latex
-  $(LATEX) "\def\tudfinalflag{}\input{$(1)}"
-endef
 INDEX = texindy -C utf8
+define run_latex
+  $(LATEX) "\let\tudfinalflag\relax\let\tudxdyflag\relax\input{$(1)}"
+endef
 define run_texindy
 	$(INDEX) -M tudscrdoc-ind.xdy -o $(1).ind $(1)-xdy.idx
 	$(INDEX) -M tudscrdoc-gls.xdy -o $(1).gls $(1)-xdy.glo
@@ -17,10 +15,6 @@ endef
 include utils_fs.mak
 include utils_tex.mak
 
-# TODO SRC__FILE -> SRC__FILE + SRC__TARGET
-# TODO DOC__FILE -> MAN__SOURCE + MAN__TARGET
-# TODO SRC__.../MAN__... identical for this bundle
-# TODO SRC_FILES -> ...
 # source files and package version
 SRC__FILE := $(PACKAGE).dtx
 SRC_FILES := $(sort $(SRC__FILE) $(wildcard *.dtx))
@@ -101,9 +95,8 @@ clean: purge
 
 # creates zip files for CTAN and GitHub from TDS folder structure
 release: $(PACKAGE) doc
-	$(call rm_dirs,$(GIT_DIR))
+	$(call rm_dirs,$(RLS_DIR))
 	$(call copy_tds,$(GIT_DIR))
-	$(call rm_dirs,$(CTAN_DIR))
 	$(call copy_tds,$(CTAN_DIR)$(PACKAGE)/,$(TDS_SUFFIX))
 	$(call cp_files,$(CTAN_DIR)$(PACKAGE)/$(subst $(TDS_SUFFIX),,$(TDS_DOC_DIR))README.md,$(CTAN_DIR)$(PACKAGE))
 	cd $(GIT_DIR) && zip -r $(PACKAGE)_$(VERSION).zip *

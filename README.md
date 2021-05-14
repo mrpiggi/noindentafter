@@ -1,5 +1,5 @@
 
- noindentafter -- purposefully prevention of paragraph indentation
+ noindentafter &ndash; purposefully prevention of paragraph indentation
 -------------------------------------------------------------------------------
 
  Copyright (C) Michiel Helvensteijn, 2014-2021<br>
@@ -28,7 +28,7 @@ only packages `etoolbox` and `xpatch` are required.
 
 Versions
 --------
-**v1.0.0** (2021-05-14)
+**v1.00** (2021-05-14)
 + new maintainer: Falk Hanisch
 + fix for `LaTeXe 2019-10-01` and later
 
