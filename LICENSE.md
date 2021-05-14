@@ -1,5 +1,5 @@
 
- noindentafter -- purposefully prevention of paragraph indentation
+ noindentafter &ndash; purposefully prevention of paragraph indentation
 ----------------------------------------------------------------------------
 
  Copyright (C) Michiel Helvensteijn, 2014-2021<br>
