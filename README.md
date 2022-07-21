@@ -1,9 +1,9 @@
 
- noindentafter &ndash; purposefully prevention of paragraph indentation
+ noindentafter &ndash; prevent paragraph indentation purposefully
 -------------------------------------------------------------------------------
 
  Copyright (C) Michiel Helvensteijn, 2014-2021<br>
- Copyright (C) Falk Hanisch <hanisch.latex@outlook.com>, 2021-2021
+ Copyright (C) Falk Hanisch <hanisch.latex@outlook.com>, 2021-2022
 
  **noindentafter 2021-05-14 v1.00**
  
@@ -12,7 +12,8 @@
 -------------------------------------------------------------------------------
 
  This material is subject to the LaTeX Project Public License version 1.3c
- or later. See http://www.latex-project.org/lppl.txt for details.
+ or later.<br>
+ See http://www.latex-project.org/lppl.txt for details.
 
 -------------------------------------------------------------------------------
 

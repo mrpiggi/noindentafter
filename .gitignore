@@ -5,10 +5,14 @@ release*/
 *.bak
 *.glo
 *.gls
+*.hd
 *.idx
+*.ilg
 *.ind
 *.log
 *.pdf
 *.sty
 *.synctex*
+*.tdo
 *.xdy
+*.xlg
