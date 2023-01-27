@@ -7,7 +7,7 @@
 %% ----------------------------------------------------------------------------
 %%
 %% Copyright (C) Michiel Helvensteijn, 2014-2021
-%% Copyright (C) Falk Hanisch <hanisch.latex@outlook.com>, 2021-2022
+%% Copyright (C) Falk Hanisch <hanisch.latex@outlook.com>, 2021-2023
 %%
 %% ----------------------------------------------------------------------------
 %%
@@ -65,7 +65,7 @@ noindentafter -- prevent paragraph indentation purposefully
 \ProvidesFile{noindentafter.dtx}
 %</dtx>
 %<package&identify>\ProvidesPackage{noindentafter}
-  [2022-07-25 v1.00 prevent paragraph indentation purposefully]
+  [2023-01-27 v1.00 prevent paragraph indentation purposefully]
 %</dtx|package&identify>
 % \fi
 %
@@ -337,6 +337,7 @@ definitely worth reading.
 %
 % \section{Implementation}
 % The only required packages are \pkg{etoolbox} as well as \pkg{xpatch}.
+% \ToDo{use kernel hooks directly instead of \pkg{etoolbox}}[v1.01]
 %    \begin{macrocode}
 \RequirePackage{etoolbox}
 \RequirePackage{xpatch}
